@@ -1,0 +1,38 @@
+---
+# tasks file for common
+- name: Determine if Atomic
+  stat: path=/run/ostree-booted
+  register: s
+  changed_when: false
+
+- name: Init the is_atomic fact
+  set_fact:
+    is_atomic: false
+
+- name: Set the is_atomic fact
+  set_fact:
+    is_atomic: true
+  when: s.stat.exists
+
+- name: Init Determine if RHEL7
+  set_fact:
+    is_rhel7: false
+
+- name: Determine if RHEL7
+  set_fact:
+    is_rhel7: true
+  when: >
+    ansible_os_family == 'RedHat' and
+    ansible_distribution_major_version == '7'
+
+- include: rhel7_repos.yml
+  when: is_rhel7 and ansible_distribution == 'RedHat' and not is_atomic
+
+- name: Determine if firewalld and iptables-services are installed
+  package:
+    name={{ item }}
+    state=present
+  with_items:
+    - firewalld
+    - iptables-services
+  when: not is_atomic
