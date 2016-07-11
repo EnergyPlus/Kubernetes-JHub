@@ -1,0 +1,13 @@
+---
+# tasks to install etcd
+
+- name: Install etcd from RHEL7 packages
+  yum:
+    pkg=etcd
+    state=latest
+  when: not is_atomic
+  # Allways change status, so the handlers are notified
+  changed_when: yes
+  notify:
+    - enable etcd
+    - restart etcd
