@@ -16,4 +16,4 @@
   hosts:
     - kuber-master
   roles:
-    - master
+    - etcd
