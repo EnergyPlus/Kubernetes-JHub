@@ -1,3 +1,11 @@
 ---
 
 # Main playbook to set up kubernetes environment
+
+- name: Prepare servers to install kuberentes
+  become: yes
+  become_user: root
+  hosts:
+    - all
+  roles:
+    - common
