@@ -9,3 +9,11 @@
     - all
   roles:
     - common
+
+- name: Provision Kubernetes master node
+  become: yes
+  become_user: root
+  hosts:
+    - kuber-master
+  roles:
+    - master
