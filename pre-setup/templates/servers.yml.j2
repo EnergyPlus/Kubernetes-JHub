@@ -1,0 +1,29 @@
+{% set inv=inventory %}
+{#
+  Macro definition section
+#}
+{% macro ports(plist) -%}
+ports:
+{% for i in plist%}
+    - from: {{ i.from }}
+      to: {{ i.to }}
+{% endfor %}
+{%- endmacro %}
+{#
+  Template starts here.
+#}
+---
+
+## {{ inv.title }}
+
+{% for s in inv.servers %}
+- name: {{ s.name }}
+  box: {{ s.VagrantBox }}
+  ip: {{ s.IP }}
+  ram: {{ s.ram }}
+  cpus: {{ s.cpus }}
+  {% if s.ports is defined -%}
+  {{ ports( s.ports ) }}
+  {%- endif %}
+
+{% endfor %}

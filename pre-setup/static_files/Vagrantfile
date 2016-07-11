@@ -1,0 +1,53 @@
+
+# Specify minimum Vagrant version and Vagrant API version
+Vagrant.require_version '>= 1.6.0'
+VAGRANTFILE_API_VERSION = '2'
+
+# Require YAML module
+require 'yaml'
+
+# Read YAML file with box details
+servers = YAML.load_file('servers.yml')
+
+# Create boxes
+Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
+
+  config.ssh.insert_key = false
+
+  config.vm.provision 'shell', inline: 'echo Hello'
+
+  # Iterate through entries in YAML file
+  servers.each do |server|
+    config.vm.define server['name'] do |srv|
+
+      srv.vm.box = server['box']
+        srv.vm.network 'private_network', ip: server['ip']
+
+      srv.vm.provider :virtualbox do |vb|
+        vb.name = server['name']
+        vb.memory = server['ram']
+        vb.cpus = server['cpus']
+        vb.customize ['modifyvm', :id, '--natdnshostresolver1', 'on']
+        vb.customize ['modifyvm', :id, '--ioapic', 'on']
+      end # provider :virtualbox
+
+      # plugin conflict
+      if Vagrant.has_plugin?('vagrant-vbguest') then
+        config.vbguest.auto_update = false
+      end
+
+      # Forward the ports from the list.
+      if server['ports'] != nil
+        server['ports'].each do |port|
+          srv.vm.network 'forwarded_port', guest: port['from'], \
+                                           host: port['to'], \
+                                           autocorrect: true
+        end # do server['ports']
+      end # if server['ports']
+
+      srv.vm.network :private_network, ip: server['ip']
+
+    end # do define server
+  end # do servers.each
+
+end

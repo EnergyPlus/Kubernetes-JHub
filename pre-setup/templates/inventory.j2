@@ -1,0 +1,24 @@
+{% set inv=inventory %}
+## {{ inv.title }}
+
+# Hosts
+{% for s in inv.servers %}
+{{ s.name }} ansible_ssh_host={{ s.IP }}
+{% endfor %}
+
+{% for g in inv.groups %}
+[{{ g.name }}]
+{% for s in inv.servers %}
+{% if g.name in s.group_memberships %}
+{{ s.name }}
+{% endif %}
+{% endfor %}
+
+{% if g.vars is defined %}
+[{{ g.name }}:vars]
+{% for key, val in g.vars.items() %}
+{{ key }}={{ val }}
+{% endfor %}
+{% endif %}
+
+{% endfor %}
