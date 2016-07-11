@@ -20,21 +20,14 @@
   roles:
     - etcd
 
-- name: Provision Kubernetes master node
+- name: Provision Kubernetes and flannel
   become: yes
   become_user: root
   vars_files:
     - conf_vars.yml
   hosts:
     - master
-  roles:
-    - kubernetes
-    - flannel
-
-- name: Provision Kubernetes master node
-  become: yes
-  become_user: root
-  hosts:
     - minions
   roles:
+    - kubernetes
     - flannel
