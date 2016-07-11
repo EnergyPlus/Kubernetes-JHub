@@ -1,0 +1,47 @@
+{
+  "inventory":
+  {
+    "title": "Server Inventory to be used with local VM using Vagrant.",
+
+    "groups":
+    [
+      {
+        "name": "RHEL",
+        "vars":
+        {
+          "ansible_ssh_user": "vagrant"
+        }
+      }
+    ],
+
+    "servers":
+    [
+      {
+        "name": "gitlab",
+        "IP": "172.12.10.71",
+        "ssh_user": "root",
+        "OS": "CentOS",
+        "VagrantBox": "centos/7",
+        "ram": 1024,
+        "cpus": 4,
+        "group_memberships":
+        [
+          "RHEL"
+        ]
+      },
+      {
+        "name": "runner",
+        "IP": "172.12.10.72",
+        "ssh_user": "root",
+        "OS": "CentOS",
+        "VagrantBox": "centos/7",
+        "ram": 512,
+        "cpus": 2,
+        "group_memberships":
+        [
+          "RHEL"
+        ]
+      }
+    ]
+  }
+}
