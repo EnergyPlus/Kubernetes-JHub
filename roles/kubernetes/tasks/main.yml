@@ -1,0 +1,10 @@
+---
+# tasks file for kubernetes
+
+- name: Install kubernetes
+  package:
+    name=kubernetes
+    state=latest
+  notify:
+    - restart kuberentes
+  when: not is_atomic

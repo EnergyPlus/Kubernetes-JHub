@@ -1,0 +1,13 @@
+---
+# handlers file for kubernetes
+
+- name: enable kubernetes
+  service:
+    name=kubernetes
+    enabled=yes
+
+- name: restart kubernetes
+  service:
+    name=kubernetes
+    state=restarted
+    enabled=yes
