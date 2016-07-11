@@ -19,3 +19,4 @@
     - etcd
   roles:
     - etcd
+    - kubernetes
