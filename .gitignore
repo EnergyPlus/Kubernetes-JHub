@@ -1,0 +1,9 @@
+
+# Vagrant files and folders.
+.vagrant/
+Vagrantfile
+servers.yml
+
+# Ansible files
+ansible.cfg
+ssh.config
