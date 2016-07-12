@@ -1,13 +1,20 @@
 ---
 # handlers file for kubernetes
 
-- name: enable kubernetes
+- name: restart kube-apiserver
   service:
-    name=kubernetes
+    name=kube-apiserver
     enabled=yes
-
-- name: restart kubernetes
-  service:
-    name=kubernetes
     state=restarted
+
+- name: restart kube-controller-manager
+  service:
+    name=kube-controller-manager
     enabled=yes
+    state=restarted
+
+- name: restart kube-scheduler
+  service:
+    name=kube-scheduler
+    enabled=yes
+    state=restarted
