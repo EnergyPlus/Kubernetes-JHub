@@ -1,0 +1,9 @@
+---
+
+service_file: /etc/systemd/system/multi-user.target.wants/etcd.service
+service_file_template: etcd_service.j2
+
+env_file: /etc/etcd/etcd.conf
+env_file_template: etcd_conf.j2
+
+etcd_def_ip: 2379
