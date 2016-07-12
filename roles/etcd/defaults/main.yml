@@ -1,5 +1,20 @@
 ---
 
-etcd_data_dir: /var/lib/etcd
+etcd_config_only: no
 
 etcd_ip: 4001
+
+# Runtime Variables
+etcd_data_dir: /var/lib/etcd
+etcd_user: root # The user only applies to EL distros
+
+# Networking Variables
+etcd_interface: lo
+etcd_client_interface: "{{ etcd_interface }}"
+etcd_peer_interface: "{{ etcd_interface }}"
+etcd_client_port: 2379
+etcd_peer_port: 4001
+etcd_peers_group: etcd
+etcd_url_scheme: http
+etcd_client_url_scheme: "{{ etcd_url_scheme }}"
+etcd_peer_url_scheme: "{{ etcd_url_scheme }}"
