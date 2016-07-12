@@ -16,7 +16,7 @@
   with_items:
     - src: kuber_config.j2
       dest: /etc/kubernetes/config
-    - src: minion_kubelete.j2
+    - src: kuber_kubelete.j2
       dest: /etc/kubernetes/kubelet
 
 - fail:
