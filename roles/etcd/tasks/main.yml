@@ -1,6 +1,17 @@
 ---
 # tasks to install etcd
 
+- name: Include Configuration
+  include_vars: "{{ item }}"
+  with_first_found:
+    - "{{ ansible_os_family }}.yml"
+  when: not etcd_config_only|bool
+
+- name: Install system dependencies for synchronize
+  package: name={{ item }}
+  with_flattened: "{{ etcd_install_dependencies|default([]) }}"
+  when: not etcd_config_only|bool
+
 - name: Install etcd from RHEL7 packages
   yum:
     pkg=etcd
