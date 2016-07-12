@@ -18,3 +18,15 @@
     name=kube-scheduler
     enabled=yes
     state=restarted
+
+- name: restart kubelet
+  service:
+    name=kubelet
+    enabled=yes
+    state=restarted
+
+- name: restart kube-proxy
+  service:
+    name=kube-proxy
+    enabled=yes
+    state=restarted

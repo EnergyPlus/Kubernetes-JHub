@@ -19,4 +19,8 @@
     - src: kuber_kubelete.j2
       dest: /etc/kubernetes/kubelet
 
-- fail:
+- debug: msg='Restart and enable kubernetes services'
+  notify:
+    - restart kubelet
+    - restart kube-proxy
+  changed_when: true
