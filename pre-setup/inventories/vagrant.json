@@ -11,35 +11,43 @@
         {
           "ansible_ssh_user": "vagrant"
         }
+      },
+      {
+        "name": "Master"
+      },
+      {
+        "name": "Minions"
       }
     ],
 
     "servers":
     [
       {
-        "name": "gitlab",
-        "IP": "172.12.10.71",
-        "ssh_user": "root",
-        "OS": "CentOS",
-        "VagrantBox": "centos/7",
-        "ram": 1024,
-        "cpus": 4,
-        "group_memberships":
-        [
-          "RHEL"
-        ]
-      },
-      {
-        "name": "runner",
-        "IP": "172.12.10.72",
-        "ssh_user": "root",
+        "name": "kuber-master",
+        "IP": "172.12.10.81",
+        "ssh_user": "vagrant",
         "OS": "CentOS",
         "VagrantBox": "centos/7",
         "ram": 512,
-        "cpus": 2,
+        "cpus": 1,
         "group_memberships":
         [
-          "RHEL"
+          "RHEL",
+          "Master"
+        ]
+      },
+      {
+        "name": "kuber-minion1",
+        "IP": "172.12.10.82",
+        "ssh_user": "vagrant",
+        "OS": "CentOS",
+        "VagrantBox": "centos/7",
+        "ram": 512,
+        "cpus": 1,
+        "group_memberships":
+        [
+          "RHEL",
+          "Minions"
         ]
       }
     ]
