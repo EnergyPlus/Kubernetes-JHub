@@ -7,14 +7,10 @@
     state=latest
   when: not is_atomic
 
-- name: Write etcd config file for version 2.0.x
-  template:
-    src=apiserver.j2
-    dest=/etc/kubernetes/apiserver
+- name: Include Master
+  include: kuber_master.yml
+  when: "'Master' in group_names"
 
-- debug: msg='Restart and enable kubernetes services'
-  notify:
-    - restart kube-apiserver
-    - restart kube-controller-manager
-    - restart kube-scheduler
-  changed_when: true
+- name: Include Minion
+  include: kuber_minion.yml
+  when: "'Minions' in group_names"
