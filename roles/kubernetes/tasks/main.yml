@@ -8,3 +8,10 @@
   notify:
     - restart kuberentes
   when: not is_atomic
+
+- name: Write etcd config file for version 2.0.x
+  template:
+    src=apiserver.j2
+    dest=/etc/kubernetes/apiserver
+  notify:
+    - restart kubernetes
