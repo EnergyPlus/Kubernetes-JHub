@@ -12,9 +12,16 @@
     - enable etcd
     - restart etcd
 
-- name: Write etcd config file for version 2.0.x
+- name: Make etcd data dir
+  file:
+    path={{ etcd_data_dir }}
+    state=directory
+
+- name: Write etcd config file
   template:
-    src=etcd.20.conf.j2
-    dest=/etc/etcd/etcd.conf
+    src={{ env_file_template }}
+    dest={{ env_file }}
+  # Allways restart the service
+  changed_when: yes
   notify:
     - restart etcd
