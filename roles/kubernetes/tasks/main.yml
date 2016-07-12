@@ -7,10 +7,8 @@
     state=latest
   when: not is_atomic
 
-- name: Include Master
-  include: kuber_master.yml
+- include: kuber_master.yml
   when: "'Master' in group_names"
 
-- name: Include Minion
-  include: kuber_minion.yml
+- include: kuber_minion.yml
   when: "'Minions' in group_names"
