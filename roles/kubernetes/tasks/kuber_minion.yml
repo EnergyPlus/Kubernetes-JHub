@@ -3,4 +3,20 @@
 - debug:
     msg: "I am minion"
 
+- name: set master ip address
+  set_fact:
+    master_ip: >
+      '{{ hostvars[groups["Master"][0]]
+         ['ansible_eth1']['ipv4']['address'] }}'
+
+- name: Write etcd config file for version 2.0.x
+  template:
+    src={{ item.src }}
+    dest={{ item.dest }}
+  with_items:
+    - src: kuber_config.j2
+      dest: /etc/kubernetes/config
+    - src: minion_kubelete.j2
+      dest: /etc/kubernetes/kubelet
+
 - fail:
