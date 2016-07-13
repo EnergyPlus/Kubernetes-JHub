@@ -1,43 +1,19 @@
 ---
 
-# Service kube-apiserver
-# Service kube-controller-manager
-# Service kube-scheduler
 kube_config_file: kube_config.j2
 kube_config_path: /etc/kubernetes/config
 
-# Service kube-apiserver
-# $KUBE_LOGTOSTDERR
-# $KUBE_LOG_LEVEL
-# $KUBE_ETCD_SERVERS
-# $KUBE_API_ADDRESS
-# $KUBE_API_PORT
-# $KUBELET_PORT
-# $KUBE_ALLOW_PRIV
-# $KUBE_SERVICE_ADDRESSES
-# $KUBE_ADMISSION_CONTROL
-# $KUBE_API_ARGS
 kube_api_file: kube_apiserver.j2
 kube_api_path: /etc/kubernetes/apiserver
 
-# Service kube-controller-manager
-# $KUBE_LOGTOSTDERR
-# $KUBE_LOG_LEVEL
-# $KUBE_MASTER
-# $KUBE_CONTROLLER_MANAGER_ARGS
 kube_controller_file: kube_controller.j2
 kube_controller_path: /etc/kubernetes/controller-manager
 
-# Service kube-scheduler
-# $KUBE_LOGTOSTDERR
-# $KUBE_LOG_LEVEL
-# $KUBE_MASTER
-# $KUBE_SCHEDULER_ARGS
 kube_scheduler_file: kube_scheduler.j2
 kube_scheduler_path: /etc/kubernetes/scheduler
 
-kube_proxy_file:
-kube_proxy_path:
+kube_proxy_file: kube_proxy.j2
+kube_proxy_path: /etc/kubernetes/proxy
 
-kube_kubelete_file:
-kube_kubelete_path:
+kube_kubelete_file: kube_kubelete.j2
+kube_kubelete_path: /etc/kubernetes/kubelet
