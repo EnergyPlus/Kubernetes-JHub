@@ -1,32 +1,84 @@
-###
-# kubernetes system config
-#
-# The following values are used to configure the kube-apiserver
-#
+################################################################################
+# kube-apiserver configuration
+################################################################################
+# --logtostderr=true: log to standard error instead of files
+KUBE_LOGTOSTDERR="--logtostderr=true"
 
-# The address on the local server to listen to.
-# KUBE_API_ADDRESS="--insecure-bind-address=127.0.0.1"
+# --v=0: log level for V logs
+KUBE_LOG_LEVEL="--v=4"
+
+# --etcd-servers=[]: List of etcd servers to watch (http://ip:port),
+# comma separated. Mutually exclusive with -etcd-config
+KUBE_ETCD_SERVERS="--etcd-servers=${ETCD_SERVERS}"
+
+# The IP address on which to serve the --insecure-port.
+# --insecure-bind-address=127.0.0.1:
+# KUBE_API_ADDRESS="--insecure-bind-address=${MASTER_ADDRESS}"
 KUBE_API_ADDRESS="--address=0.0.0.0"
 
-# The port on the local server to listen on.
-# KUBE_API_PORT="--port=8080"
+# The port on which to serve unsecured, unauthenticated access.
+# --insecure-port=8080:
+# KUBE_API_PORT="--insecure-port=8080"
 KUBE_API_PORT="--port=8080"
 
 # Port minions listen on
 # KUBELET_PORT="--kubelet-port=10250"
-KUBELET_PORT="--kubelet_port=10250"
+KUBELET_PORT="--kubelet-port=10250"
 
-# Comma separated list of nodes in the etcd cluster
-# KUBE_ETCD_SERVERS="--etcd-servers=http://127.0.0.1:2379"
-KUBE_ETCD_SERVERS="--etcd_servers=http://127.0.0.1:4001"
 
 # Address range to use for services
 # KUBE_SERVICE_ADDRESSES="--service-cluster-ip-range=10.254.0.0/16"
 KUBE_SERVICE_ADDRESSES="--service-cluster-ip-range=172.12.10.0/24"
 
 # default admission control policies
-# KUBE_ADMISSION_CONTROL="--admission-control=NamespaceLifecycle,NamespaceExists,LimitRanger,SecurityContextDeny,ServiceAccount,ResourceQuota"
+# KUBE_ADMISSION_CONTROL="--admission-control=NamespaceLifecycle, \
+#                                             NamespaceExists, \
+#                                             LimitRanger, \
+#                                             SecurityContextDeny, \
+#                                             ServiceAccount, \
+#                                             ResourceQuota"
 KUBE_ADMISSION_CONTROL="--admission_control=NamespaceLifecycle,NamespaceExists,LimitRanger,SecurityContextDeny,ResourceQuota"
 
 # Add your own!
-KUBE_API_ARGS=""
+KUBE_API_ARGS: {{ kube_api_args }}
+---
+
+# Comma separated list of nodes in the etcd cluster
+# KUBE_ETCD_SERVERS="--etcd-servers=http://127.0.0.1:2379"
+KUBE_ETCD_SERVERS="--etcd_servers=http://127.0.0.1:4001"
+
+# --allow-privileged=false: If true, allow privileged containers.
+KUBE_ALLOW_PRIV="--allow-privileged=false"
+
+# --service-cluster-ip-range=<nil>: A CIDR notation IP range from which to assign service cluster IPs.
+# This must not overlap with any IP ranges assigned to nodes for pods.
+KUBE_SERVICE_ADDRESSES="--service-cluster-ip-range=${SERVICE_CLUSTER_IP_RANGE}"
+
+# --admission-control="AlwaysAdmit": Ordered list of plug-ins
+# to do admission control of resources into cluster.
+# Comma-delimited list of:
+#   LimitRanger, AlwaysDeny, SecurityContextDeny, NamespaceExists,
+#   NamespaceLifecycle, NamespaceAutoProvision,
+#   AlwaysAdmit, ServiceAccount, ResourceQuota
+KUBE_ADMISSION_CONTROL="--admission-control=${ADMISSION_CONTROL}"
+
+# --client-ca-file="": If set, any request presenting a client certificate signed
+# by one of the authorities in the client-ca-file is authenticated with an identity
+# corresponding to the CommonName of the client certificate.
+KUBE_API_CLIENT_CA_FILE="--client-ca-file=/srv/kubernetes/ca.crt"
+
+# --tls-cert-file="": File containing x509 Certificate for HTTPS.  (CA cert, if any,
+# concatenated after server cert). If HTTPS serving is enabled, and --tls-cert-file
+# and --tls-private-key-file are not provided, a self-signed certificate and key are
+# generated for the public address and saved to /var/run/kubernetes.
+KUBE_API_TLS_CERT_FILE="--tls-cert-file=/srv/kubernetes/server.cert"
+
+# --tls-private-key-file="": File containing x509 private key matching --tls-cert-file.
+KUBE_API_TLS_PRIVATE_KEY_FILE="--tls-private-key-file=/srv/kubernetes/server.key"
+
+
+
+
+# --advertise-address=<nil>: The IP address on which to advertise
+# the apiserver to members of the cluster.
+KUBE_ADVERTISE_ADDR="--advertise-address=${MASTER_ADDRESS}"
