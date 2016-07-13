@@ -2,30 +2,40 @@
 # kube-apiserver configuration
 ################################################################################
 
-# --logtostderr=true: log to standard error instead of files
-KUBE_LOGTOSTDERR="--logtostderr={{ kube_logtostderr }}"
-
-# --v=0: log level for V logs
-KUBE_LOG_LEVEL="--v={{ kube_log_level }}"
-
-# --etcd-servers=[]: List of etcd servers to watch (http://ip:port),
-# comma separated. Mutually exclusive with -etcd-config
-KUBE_ETCD_SERVERS="--etcd-servers={{ kube_etcd_servers }}"
+# [Service]
+# EnvironmentFile=-/etc/kubernetes/config
+# EnvironmentFile=-/etc/kubernetes/apiserver
+# User=kube
+# ExecStart=/usr/bin/kube-apiserver \
+#             $KUBE_LOGTOSTDERR \
+#             $KUBE_LOG_LEVEL \
+#             $KUBE_ETCD_SERVERS \
+#             $KUBE_API_ADDRESS \
+#             $KUBE_API_PORT \
+#             $KUBELET_PORT \
+#             $KUBE_ALLOW_PRIV \
+#             $KUBE_SERVICE_ADDRESSES \
+#             $KUBE_ADMISSION_CONTROL \
+#             $KUBE_API_ARGS
 
 # The IP address on which to serve the --insecure-port.
 # --insecure-bind-address=127.0.0.1:
 # KUBE_API_ADDRESS="--insecure-bind-address=${MASTER_ADDRESS}"
 # KUBE_API_ADDRESS="--address={{ kube_api_address }}"
-KUBE_API_ADDRESS="--insecure-bind-address=127.0.0.1:"
+KUBE_API_ADDRESS="--insecure-bind-address={{ kube_api_address }}"
+
+# --etcd-servers=[]: List of etcd servers to watch (http://ip:port),
+# comma separated. Mutually exclusive with -etcd-config
+KUBE_ETCD_SERVERS="--etcd-servers={{ kube_etcd_servers }}"
 
 # The port on which to serve unsecured, unauthenticated access.
 # --insecure-port=8080:
 # KUBE_API_PORT="--insecure-port=8080"
-KUBE_API_PORT="--port={{ kube_api_port }}"
+# KUBE_API_PORT="--port={{ kube_api_port }}"
 
 # Port minions listen on
-# KUBELET_PORT="--kubelet-port=10250"
-KUBELET_PORT="--kubelet-port={{ kubelet_port }}"
+# KUBELET_PORT="--kubelet_port=10250"
+# KUBELET_PORT="--kubelet_port={{ kubelet_port }}"
 
 # Address range to use for services
 # KUBE_SERVICE_ADDRESSES="--service-cluster-ip-range=10.254.0.0/16"
@@ -44,4 +54,5 @@ KUBE_SERVICE_ADDRESSES="--service-cluster-ip-range={{ kube_service_addresses }}"
 KUBE_ADMISSION_CONTROL="--admission_control={{ kube_admission_control }}"
 
 # Add your own!
+# http://kubernetes.io/docs/admin/kube-apiserver/
 KUBE_API_ARGS="{{ kube_api_args }}"
