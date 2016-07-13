@@ -1,14 +1,15 @@
 ---
 
-#  Configure:
-#   - acpi
-#   - control
-#   - scheduler
+- name: Install kubernetes
+  package: name={{ item }}
+  with_flattened: "{{ kube_master_install_packages | default([]) }}"
+  when: not kube_config_only | bool
 
 - name: Write apiserver config file
   template:
-    src={{ kube_api_file }}
-    dest={{ kube_api_path }}
+    src={{ item.file }}
+    dest={{ item.path }}
+  with_items: "{{ kube_master_conf_services }}"
 
 - debug: msg='Restart and enable kubernetes services'
   notify:
