@@ -1,6 +1,6 @@
 ---
 
-kube_config_only: no
+kube_config_only: False
 
 ################################################################################
 # kubernetes common (master and minion) configuration variables

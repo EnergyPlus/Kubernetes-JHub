@@ -15,6 +15,13 @@ kube_master_conf_services:
   - file: "{{ kube_scheduler_file }}"
     path: "{{ kube_scheduler_path }}"
 
-
 kube_minion_install_packages:
   - kubernetes-node
+
+kube_minion_conf_services:
+  - file: "{{ kube_config_file }}"
+    path: "{{ kube_config_path }}"
+  - file: "{{ kube_proxy_file }}"
+    path: "{{ kube_proxy_path }}"
+  - file: "{{ kube_kubelete_file }}"
+    path: "{{ kube_kubelete_path }}"

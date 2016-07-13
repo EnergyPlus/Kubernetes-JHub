@@ -9,24 +9,14 @@
   with_flattened: "{{ kube_minion_install_packages | default([]) }}"
   when: not kube_config_only | bool
 
-- name: set master ip address
-  set_fact:
-    master_ip: >
-      '{{ hostvars[groups["Master"][0]]
-         ['ansible_eth1']['ipv4']['address'] }}'
-
-- name: Write etcd config file for version 2.0.x
+- name: Write apiserver config file
   template:
-    src={{ item.src }}
-    dest={{ item.dest }}
-  with_items:
-    - src: kube_config.j2
-      dest: /etc/kubernetes/config
-    - src: kube_kubelete.j2
-      dest: /etc/kubernetes/kubelet
+    src={{ item.file }}
+    dest={{ item.path }}
+  with_items: "{{ kube_minion_conf_services }}"
 
 - debug: msg='Restart and enable kubernetes services'
   notify:
     - restart kubelet
-    - restart kube-proxy
+    # - restart kube-proxy
   changed_when: true
