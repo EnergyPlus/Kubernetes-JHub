@@ -1,11 +1,12 @@
 ---
 # tasks file for kubernetes
 
-- name: Install kubernetes
-  package:
-    name=kubernetes
-    state=latest
-  when: not is_atomic
+
+- name: Include Configuration
+  include_vars: "{{ item }}"
+  with_first_found:
+    - "{{ ansible_os_family }}.yml"
+  when: not kube_config_only | bool
 
 - include: kuber_master.yml
   when: "'Master' in group_names"

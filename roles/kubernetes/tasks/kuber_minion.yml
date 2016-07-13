@@ -4,6 +4,11 @@
 #   - kubelete
 #   - kube-proxy
 
+- name: Install kubernetes
+  package: name={{ item }}
+  with_flattened: "{{ kube_minion_install_packages | default([]) }}"
+  when: not kube_config_only | bool
+
 - name: set master ip address
   set_fact:
     master_ip: >
