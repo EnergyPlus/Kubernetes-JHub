@@ -1,24 +1,29 @@
 ---
 
-kuber_config_only: no
+kube_config_only: no
 
 ################################################################################
-# kubernetes master configuration variables
+# kubernetes common (master and minion) configuration variables
 ################################################################################
 
 # --logtostderr=true: log to standard error instead of files
-kube_logtostderr: true
+kube_logtostderr: "true"
 
 # journal message level, 0 is debug
 kube_log_level: 0
 
-# --etcd-servers=[]: list of etcd servers to watch (http://ip:port),
-# comma separated. mutually exclusive with -etcd-config
-kube_etcd_servers: [] # "--etcd-servers={{ etcd_servers }}"
+################################################################################
+# kubernetes master configuration variables
+# http://kubernetes.io/docs/admin/kube-apiserver/
+################################################################################
 
 # the ip address on which to serve the --insecure-port.
 # --insecure-bind-address=127.0.0.1:
-kube_api_address: "{{ master_address }}"
+kube_api_address: "127.0.0.1"
+
+# --etcd-servers=[]: list of etcd servers to watch (http://ip:port),
+# comma separated. mutually exclusive with -etcd-config
+kube_etcd_servers: "http://{{ etcd_address }}:{{ etcd_port }}"
 
 # the port on which to serve unsecured, unauthenticated access.
 # --insecure-port=8080:
@@ -31,7 +36,7 @@ kubelet_port: 10250
 # kube_service_addresses="--service-cluster-ip-range=10.254.0.0/16"
 # --service-cluster-ip-range=<nil>: a cidr notation ip range from which to assign service cluster ips.
 # this must not overlap with any ip ranges assigned to nodes for pods.
-kube_service_addresses: "{{ service_cluster_ip_range }}"
+kube_service_addresses: 172.12.10.80/31
 
 
 # to do admission control of resources into cluster.
@@ -40,12 +45,21 @@ kube_service_addresses: "{{ service_cluster_ip_range }}"
 #   limitranger, alwaysdeny, securitycontextdeny, namespaceexists,
 #   namespacelifecycle, namespaceautoprovision,
 #   alwaysadmit, serviceaccount, resourcequota
+# kube_admission_control: >
+#   NamespaceLifecycle,
+#   NamespaceExists,
+#   LimitRanger,
+#   SecurityContextDeny,
+#   ServiceAccount,
+#   ResourceQuota
+
 kube_admission_control: >
-      namespacelifecycle,
-      namespaceexists,
-      limitranger,
-      securitycontextdeny,
-      resourcequota
+  NamespaceLifecycle,
+  NamespaceExists,
+  LimitRanger,
+  SecurityContextDeny,
+  ServiceAccount,
+  ResourceQuota
 
 # ---- KUBERNETES API EXTRA CONFIGURATION OPTIONS. ---
 
@@ -54,7 +68,7 @@ kube_allow_priv: false
 
 # how the controller-manager, scheduler, and proxy find the apiserver
 # kube_master:--master=http://127.0.0.1:8080"
-kube_master: "http://{{ master_address }}:{{ master_ip }}"
+kube_master: "http://{{ master_address }}:{{ master_port }}"
 
 # the ip address on which to advertise the apiserver to members of the cluster.
 # --advertise-address=<nil>:
@@ -90,7 +104,7 @@ kube_api_client_ca_file: "{{ kube_controller_manager_root_ca_file }}"
 
 kube_api_args: " \
   --tls-cert-file={{ kube_api_tls_cert_file }} \
-    --tls-private-key-file={{ kube_api_tls_private_key_file }} \
+  --tls-private-key-file={{ kube_api_tls_private_key_file }} \
   --root-ca-file={{ kube_controller_manager_root_ca_file }} \
   --service-account-private-key={{ kube_contr_manager_ser_acc_priv_key_file }} \
   --allow-privileged={{ kube_allow_privileged }} \
@@ -102,11 +116,17 @@ kube_api_args: " \
 
 ################################################################################
 # kube-controller-manager configuration
+# http://kubernetes.io/docs/admin/kube-controller-manager/
 ################################################################################
+
+kube_controller_manager_args: " \
+  --root-ca-file={{ kube_controller_manager_root_ca_file }} \
+  --service-account-private-key={{ kube_contr_manager_ser_acc_priv_key_file }} \
+  "
 
 ################################################################################
 # kube-scheduler configuration
+# http://kubernetes.io/docs/admin/kube-scheduler/
 ################################################################################
 
-# add your own!
 kube_scheduler_args: ""

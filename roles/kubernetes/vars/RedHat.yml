@@ -1,0 +1,20 @@
+---
+
+kube_config_only: False
+
+kube_master_install_packages:
+  - kubernetes-master
+
+kube_master_conf_services:
+  - file: "{{ kube_config_file }}"
+    path: "{{ kube_config_path }}"
+  - file: "{{ kube_api_file }}"
+    path: "{{ kube_api_path }}"
+  - file: "{{ kube_controller_file }}"
+    path: "{{ kube_controller_path }}"
+  - file: "{{ kube_scheduler_file }}"
+    path: "{{ kube_scheduler_path }}"
+
+
+kube_minion_install_packages:
+  - kubernetes-node
