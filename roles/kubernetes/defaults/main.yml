@@ -18,7 +18,7 @@ kube_etcd_servers: [] # "--etcd-servers={{ etcd_servers }}"
 
 # the ip address on which to serve the --insecure-port.
 # --insecure-bind-address=127.0.0.1:
-kube_api_address: "{{ master_address | default(0.0.0.0) }}"
+kube_api_address: "{{ master_address }}"
 
 # the port on which to serve unsecured, unauthenticated access.
 # --insecure-port=8080:
@@ -31,10 +31,11 @@ kubelet_port: 10250
 # kube_service_addresses="--service-cluster-ip-range=10.254.0.0/16"
 # --service-cluster-ip-range=<nil>: a cidr notation ip range from which to assign service cluster ips.
 # this must not overlap with any ip ranges assigned to nodes for pods.
-kube_service_addresses:"{{ service_cluster_ip_range | default(172.12.10.0/24 )}}"
+kube_service_addresses: "{{ service_cluster_ip_range }}"
 
-# --admission-control:alwaysadmit": ordered list of plug-ins
+
 # to do admission control of resources into cluster.
+# --admission-control:alwaysadmit": ordered list of plug-ins
 # comma-delimited list of:
 #   limitranger, alwaysdeny, securitycontextdeny, namespaceexists,
 #   namespacelifecycle, namespaceautoprovision,
@@ -49,30 +50,22 @@ kube_admission_control: >
 # ---- KUBERNETES API EXTRA CONFIGURATION OPTIONS. ---
 
 # should this cluster be allowed to run privileged docker containers
-kube_allow_priv:"--allow-privileged=false"
+kube_allow_priv: false
 
 # how the controller-manager, scheduler, and proxy find the apiserver
 # kube_master:--master=http://127.0.0.1:8080"
-kube_master:"--master=http://{{ master_address }}:8080"
+kube_master: "http://{{ master_address }}:{{ master_ip }}"
 
-# --advertise-address=<nil>: the ip address on which to advertise
-# the apiserver to members of the cluster.
-kube_advertise_addr:"--advertise-address={{ master_address }}"
-
-# --allow-privileged=false: if true, allow privileged containers.
-kube_allow_priv:"--allow-privileged=false"
-
-# --client-ca-file:": if set, any request presenting a client certificate signed
-# by one of the authorities in the client-ca-file is authenticated with an identity
-# corresponding to the commonname of the client certificate.
-kube_api_client_ca_file:"--client-ca-file=/srv/kubernetes/ca.crt"
+# the ip address on which to advertise the apiserver to members of the cluster.
+# --advertise-address=<nil>:
+kube_advertise_addr: "{{ master_address }}"
 
 # file containing x509 certificate for https.  (ca cert, if any,
 # concatenated after server cert).
 # if https serving is enabled, and --tls-cert-file and --tls-private-key-file
 # are not provided, a self-signed certificate and key are generated for the
 # public address and saved to /var/run/kubernetes.
-kube_api_tls_cert_file:"--tls-cert-file=/srv/kubernetes/server.cert"
+kube_api_tls_cert_file: /srv/kubernetes/server.cert
 
 # file containing x509 private key matching --tls-cert-file.
 # --tls-private-key-file:":
@@ -95,18 +88,16 @@ kube_allow_privileged: false
 # corresponding to the commonname of the client certificate.
 kube_api_client_ca_file: "{{ kube_controller_manager_root_ca_file }}"
 
-# the ip address on which to advertise the apiserver to members of the cluster.
-# --advertise-address=<nil>:
-kube_advertise_addr: "{{ master_address | default(0.0.0.0) }}"
-
-kube_api_args: |
-  --tls-cert-file={{ kube_api_tls_cert_file }}
-  --tls-private-key-file={{ kube_api_tls_private_key_file }}
-  --root-ca-file={{ kube_controller_manager_root_ca_file }}
-  --service-account-private-key={{ kube_contr_manager_ser_acc_priv_key_file }}
-  --allow-privileged={{ kube_allow_privileged }}
-  --client-ca-file={{ kube_api_client_ca_file }}
-  --advertise-address={{ kube_advertise_addr }}
+kube_api_args: " \
+  --tls-cert-file={{ kube_api_tls_cert_file }} \
+    --tls-private-key-file={{ kube_api_tls_private_key_file }} \
+  --root-ca-file={{ kube_controller_manager_root_ca_file }} \
+  --service-account-private-key={{ kube_contr_manager_ser_acc_priv_key_file }} \
+  --allow-privileged={{ kube_allow_privileged }} \
+  --client-ca-file={{ kube_api_client_ca_file }} \
+  --advertise-address={{ kube_advertise_addr }} \
+  --master={{ kube_master }} \
+  "
 
 
 ################################################################################
@@ -118,4 +109,4 @@ kube_api_args: |
 ################################################################################
 
 # add your own!
-kube_scheduler_args:"
+kube_scheduler_args: ""

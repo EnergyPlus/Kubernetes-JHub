@@ -1,8 +1,9 @@
 ################################################################################
 # kube-apiserver configuration
 ################################################################################
+
 # --logtostderr=true: log to standard error instead of files
-KUBE_LOGTOSTDERR="--logtostderr= {{ kube_logtostderr }}"
+KUBE_LOGTOSTDERR="--logtostderr={{ kube_logtostderr }}"
 
 # --v=0: log level for V logs
 KUBE_LOG_LEVEL="--v={{ kube_log_level }}"
@@ -14,7 +15,8 @@ KUBE_ETCD_SERVERS="--etcd-servers={{ kube_etcd_servers }}"
 # The IP address on which to serve the --insecure-port.
 # --insecure-bind-address=127.0.0.1:
 # KUBE_API_ADDRESS="--insecure-bind-address=${MASTER_ADDRESS}"
-KUBE_API_ADDRESS="--address={{ kube_api_address }}"
+# KUBE_API_ADDRESS="--address={{ kube_api_address }}"
+KUBE_API_ADDRESS="--insecure-bind-address=127.0.0.1:"
 
 # The port on which to serve unsecured, unauthenticated access.
 # --insecure-port=8080:
