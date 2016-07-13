@@ -15,9 +15,9 @@
     src={{ item.src }}
     dest={{ item.dest }}
   with_items:
-    - src: kuber_config.j2
+    - src: kube_config.j2
       dest: /etc/kubernetes/config
-    - src: kuber_kubelete.j2
+    - src: kube_kubelete.j2
       dest: /etc/kubernetes/kubelet
 
 - debug: msg='Restart and enable kubernetes services'

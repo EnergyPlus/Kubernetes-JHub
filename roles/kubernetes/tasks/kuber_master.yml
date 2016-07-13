@@ -7,7 +7,7 @@
 
 - name: Write etcd config file for version 2.0.x
   template:
-    src=kuber_apiserver.j2
+    src=kube_apiserver.j2
     dest=/etc/kubernetes/apiserver
 
 - debug: msg='Restart and enable kubernetes services'
