@@ -1,0 +1,8 @@
+---
+# vars file for flannel
+
+flanneld_config_file: flanneld.j2
+flanneld_config_path: /etc/sysconfig/flanneld
+
+flannel_script_file: config-flannel.sh.j2
+flannel_script_path: /tmp/config-flannel.sh

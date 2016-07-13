@@ -1,0 +1,25 @@
+---
+
+- name: Install kubernetes
+  package:
+    name=flannel
+    state=latest
+  when: not is_atomic
+
+- name: Write flanneld config file
+  template:
+    src={{ flanneld_config_file }}
+    dest={{ flanneld_config_path }}
+  notify:
+    - restart flannel
+
+- name: Launch Flannel
+  service:
+    name=flanneld
+    state=started
+    enabled=yes
+  notify:
+    - stop docker
+    - delete docker0
+    - start docker
+    - restart kubelet

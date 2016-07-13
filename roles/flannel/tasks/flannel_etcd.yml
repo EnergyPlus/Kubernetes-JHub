@@ -1,0 +1,15 @@
+---
+
+- name: Copy the configure script
+  template:
+    src={{ flannel_script_file }}
+    dest={{ flannel_script_path }}
+    mode=0755
+
+- name: Run the configure script
+  command: {{ flannel_script_path }}
+
+- name: Remove the configure script
+  file:
+    name={{ flannel_script_path }}
+    state=absent
