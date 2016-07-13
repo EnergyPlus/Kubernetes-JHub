@@ -5,10 +5,10 @@
 #   - control
 #   - scheduler
 
-- name: Write etcd config file for version 2.0.x
+- name: Write apiserver config file
   template:
-    src=kube_apiserver.j2
-    dest=/etc/kubernetes/apiserver
+    src={{ kube_api_file }}
+    dest={{ kube_api_path }}
 
 - debug: msg='Restart and enable kubernetes services'
   notify:
