@@ -1,7 +1,8 @@
 ---
 
-- debug:
-    msg: "I am minion"
+# Configure
+#   - kubelete
+#   - kube-proxy
 
 - name: set master ip address
   set_fact:
