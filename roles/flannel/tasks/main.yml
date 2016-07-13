@@ -1,0 +1,15 @@
+---
+# tasks file for flannel
+
+
+- name: Install kubernetes
+  package:
+    name=flannel
+    state=latest
+  when: not is_atomic
+
+- include: flannel_master.yml
+  when: "'Master' in group_names"
+
+- include: flannel_minion.yml
+  when: "'Minions' in group_names"
