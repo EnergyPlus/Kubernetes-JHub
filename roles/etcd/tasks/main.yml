@@ -41,9 +41,9 @@
     state=restarted
     enabled=yes
 
-- name: etcd configure flannel network
-  command: "sh {{ etcd_flannel_script_path }}"
-  ignore_errors: yes
-  changed_when: yes
-  notify:
-    - restart etcd
+# - name: etcd configure flannel network
+#   raw: "etcdctl set /centos.com/network/config < /tmp/flannel-config.json"
+#   ignore_errors: yes
+#   changed_when: yes
+#   notify:
+#     - restart etcd
