@@ -2,8 +2,6 @@
 
 etcd_config_only: no
 
-etcd_ip: 4001
-
 # Runtime Variables
 etcd_data_dir: /var/lib/etcd
 etcd_user: root # The user only applies to EL distros
@@ -18,3 +16,9 @@ etcd_peers_group: etcd
 etcd_url_scheme: http
 etcd_client_url_scheme: "{{ etcd_url_scheme }}"
 etcd_peer_url_scheme: "{{ etcd_url_scheme }}"
+
+# configuration variables
+etcd_address: 172.12.10.80
+etcd_hostname: kube_master
+etcd_key_name: /centos.com/network/config
+etcd_servers: "{{ etcd_url_scheme }}://{{ etcd_address }}:{{ etcd_peer_port }}"
