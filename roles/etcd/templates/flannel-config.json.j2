@@ -1,10 +1,20 @@
 {
-    "Network": "10.254.0.0/16",
+    "Network": "{{ etcd_flannel_network }}",
     "SubnetLen": 24,
-    "SubnetMin": "10.254.50.0",
-    "SubnetMax": "10.254.199.0",
+    "SubnetMin": "172.12.10.0",
+    "SubnetMax": "172.12.10.255",
     "Backend": {
-        "Type": "vxlan",
-        "VNI": 1
+      "Type": "vxlan",
+      "VNI": 1
     }
 }
+{#
+
+"etcd_servers": "{{ etcd_servers }}"
+CIDR Range	172.12.10.81/24
+Netmask	255.255.255.0
+Wildcard Bits	0.0.0.255
+First IP	172.12.10.0
+Last IP	172.12.10.255
+Total Host	256
+#}
