@@ -1,5 +1,8 @@
 ---
 # tasks file for common
+
+- include: hosts_hostname.yml
+
 - name: Determine if Atomic
   stat: path=/run/ostree-booted
   register: s
