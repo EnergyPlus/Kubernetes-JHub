@@ -14,6 +14,6 @@
   become: yes
   become_user: root
   hosts:
-    - kuber-master
+    - kube-master
   roles:
     - etcd
