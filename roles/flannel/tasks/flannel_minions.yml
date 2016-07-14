@@ -1,0 +1,36 @@
+---
+
+- name: Minion Write flanneld config file
+  template:
+    src={{ flanneld_conf_minion_file }}
+    dest={{ flanneld_conf_path }}
+  notify:
+    - restart flannel
+    - restart kubelet
+
+# - name: stop docker
+#   service:
+#     name=docker
+#     state=stopped
+#
+# - name: delete docker0
+#   command: ip link delete docker0
+#   ignore_errors: yes
+#
+# - name: start docker
+#   service:
+#     name=docker
+#     state=started
+#     enabled=yes
+#
+# - name: restart kubelet
+#   service:
+#     name=kubelet
+#     state=restarted
+#   when: inventory_hostname in groups['minions']
+#
+# - name: Launch flannel
+#   service:
+#     name=flanneld
+#     state=restarted
+#     enabled=yes

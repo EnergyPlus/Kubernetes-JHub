@@ -1,3 +1,8 @@
 #!/bin/bash
 
-exec curl -s -L http://127.0.0.1:4001/v2/keys/coreos.com/network/config -XPUT -d value='{"Network": "4.0.0.0/8", "SubnetLen": 24, "Backend": {"Type": "vxlan"}}'
+# exec curl -s -L http://{{ etcd_address }}:{{ etcd_port }}/v2/keys/coreos.com/network/config -XPUT -d value='{"Network": "{{ kube_overlay_ip }}/{{ kube_overlay_prefix }}", "SubnetLen": 24, "Backend": {"Type": "vxlan"}}'
+
+# curl -s -L http://127.0.0.1:4001/v2/keys/coreos.com/network/config -XPUT -d value='\{"Network": "{{ flannel_network }}/16", "SubnetLen": 24, "Backend": \{"Type": "vxlan"\}\}'
+
+
+curl -L http://{{ etcd_address }}:{{ etcd_port }}/v2/keys/flannel/network/config -XPUT --data-urlencode value@.{{ flannel_netconf_path }}

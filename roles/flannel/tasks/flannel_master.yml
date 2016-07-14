@@ -1,0 +1,17 @@
+---
+
+
+- name: Master Copy the configure script
+  template:
+    src={{ item.file }}
+    dest={{ item.path }}
+    mode=0755
+  with_items:
+    - file: "{{ flanneld_conf_master_file }}"
+      path: "{{ flanneld_conf_path }}"
+
+- name: Launch flannel
+  service:
+    name=flanneld
+    state=restarted
+    enabled=yes

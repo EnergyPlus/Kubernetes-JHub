@@ -2,14 +2,21 @@
 
 - name: Copy the configure script
   template:
-    src={{ flannel_script_file }}
-    dest={{ flannel_script_path }}
+    src={{ item.file }}
+    dest={{ item.path }}
     mode=0755
+  with_items:
+    - file: "{{ flannel_config_json_j2 }}"
+      path: "{{ flannel_netconf_path }}"
+    - file: "{{ flannel_script_file }}"
+      path: "{{ flannel_script_path }}"
+  notify:
+    - flannel etcd network
 
-- name: Run the configure script
-  command: {{ flannel_script_path }}
-
-- name: Remove the configure script
+- name: Remove the configure files
   file:
-    name={{ flannel_script_path }}
+    name={{ item }}
     state=absent
+  with_items:
+    - "{{ flannel_script_path }}"
+    - "{{ flannel_netconf_path }}"

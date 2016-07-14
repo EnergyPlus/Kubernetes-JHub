@@ -1,6 +1,6 @@
 ---
 
-- name: Install kubernetes
+- name: Install flannel
   package:
     name=flannel
     state=latest
@@ -12,14 +12,3 @@
     dest={{ flanneld_config_path }}
   notify:
     - restart flannel
-
-- name: Launch Flannel
-  service:
-    name=flanneld
-    state=started
-    enabled=yes
-  notify:
-    - stop docker
-    - delete docker0
-    - start docker
-    - restart kubelet

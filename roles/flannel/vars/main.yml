@@ -1,8 +1,9 @@
 ---
 # vars file for flannel
 
-flanneld_config_file: flanneld.j2
-flanneld_config_path: /etc/sysconfig/flanneld
+flanneld_conf_master_file: flanneld_master.j2
+flanneld_conf_minion_file: flanneld_minion.j2
+flanneld_conf_path: /etc/sysconfig/flanneld
 
-flannel_script_file: config-flannel.sh.j2
-flannel_script_path: /tmp/config-flannel.sh
+flannel_etcd_net_j2: flannel_etcd_network.j2
+flannel_etcd_net_path: /tmp/flannel_etcd_network.sh

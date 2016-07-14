@@ -1,32 +1,3 @@
-{# Flanneld configuration options
-
-# etcd url location.  Point this to the server where etcd runs
-FLANNEL_ETCD="http://{{ master_ip }}:4001"
-
-# etcd config key.  This is the configuration key that flannel queries
-# For address range assignment
-FLANNEL_ETCD_KEY="/atomic.io/network"
-
-# Any additional options that you want to pass
-#FLANNEL_OPTIONS=""
-
-[Unit]
-Description=Flanneld overlay address etcd agent
-After=network.target
-Before=docker.service
-
-[Service]
-EnvironmentFile=-{{ EnvironmentFile }}
-ExecStartPre=/opt/kubernetes/bin/remove-docker0.sh
-ExecStart=/opt/kubernetes/bin/flanneld --ip-masq \${FLANNEL_ETCD} \${FLANNEL_ETCD_KEY}
-ExecStartPost=/opt/kubernetes/bin/mk-docker-opts.sh -d /run/flannel/docker
-
-Type=notify
-
-[Install]
-WantedBy=multi-user.target
-RequiredBy=docker.service
-#}
 ################################################################################
 # flanneld configuration
 ################################################################################
@@ -46,11 +17,11 @@ RequiredBy=docker.service
 # Flanneld configuration options
 
 # etcd url location.  Point this to the server where etcd runs
-FLANNEL_ETCD="http://{{ master_address }}:4001"
+FLANNEL_ETCD="{{ etcd_servers }}"
 
 # etcd config key.  This is the configuration key that flannel queries
 # For address range assignment
-FLANNEL_ETCD_KEY="/flannel/network"
+FLANNEL_ETCD_KEY="{{ etcd_key_path }}"
 
 # Any additional options that you want to pass
 #FLANNEL_OPTIONS=""
