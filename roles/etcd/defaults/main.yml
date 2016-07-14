@@ -22,3 +22,4 @@ etcd_address: 172.12.10.80
 etcd_hostname: kube_master
 etcd_key_name: /centos.com/network/config
 etcd_servers: "{{ etcd_url_scheme }}://{{ etcd_address }}:{{ etcd_peer_port }}"
+etcd_flannel_network: 172.12.10.81/24
