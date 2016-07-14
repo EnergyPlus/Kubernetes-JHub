@@ -5,29 +5,45 @@
   include_vars: "{{ item }}"
   with_first_found:
     - "{{ ansible_os_family }}.yml"
-  when: not etcd_config_only|bool
+  when: not etcd_config_only | bool
 
 - name: Install system dependencies for synchronize
   package: name={{ item }}
   with_flattened: "{{ etcd_install_dependencies|default([]) }}"
-  when: not etcd_config_only|bool
+  when: not etcd_config_only | bool
 
 - name: Install etcd from RHEL7 packages
-  yum:
+  package:
     pkg=etcd
     state=latest
-  when: not is_atomic
+  when: not etcd_config_only | bool
 
 - name: Make etcd data dir
   file:
     path={{ etcd_data_dir }}
     state=directory
 
-- name: Write etcd config file
+- name: Write etcd config files
   template:
-    src={{ env_file_template }}
-    dest={{ env_file }}
-  # Allways restart the service
+    src={{ item.file }}
+    dest={{ item.path }}
+  with_items:
+    - file: "{{ env_file_j2 }}"
+      path: "{{ env_file }}"
+    - file: "{{ etcd_flannel_config_json_j2 }}"
+      path: "{{ etcd_flannel_config_path }}"
+    - file: "{{ etcd_flannel_script_j2 }}"
+      path: "{{ etcd_flannel_script_path }}"
+
+- name: Start etcd to add flannel network
+  service:
+    name=etcd
+    state=restarted
+    enabled=yes
+
+- name: etcd configure flannel network
+  command: "sh {{ etcd_flannel_script_path }}"
+  ignore_errors: yes
   changed_when: yes
   notify:
     - restart etcd

@@ -1,4 +1,10 @@
 ---
 
 env_file: /etc/etcd/etcd.conf
-env_file_template: etcd.conf.j2
+env_file_j2: etcd.conf.j2
+
+etcd_flannel_script_j2: etcd-set-networkkey.sh.j2
+etcd_flannel_script_path: /tmp/etcd-set-networkkey.sh
+
+etcd_flannel_config_json_j2: flannel-config.json.j2
+etcd_flannel_config_path: /tmp/flannel-config.json
