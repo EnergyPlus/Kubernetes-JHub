@@ -13,7 +13,9 @@
 - name: Provision Kubernetes master node
   become: yes
   become_user: root
+  vars_files:
+    - conf_vars.yml
   hosts:
-    - kube-master
+    - etcd
   roles:
     - etcd
