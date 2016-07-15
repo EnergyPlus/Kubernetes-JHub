@@ -6,25 +6,28 @@
     "groups":
     [
       {
-        "name": "RHEL",
+        "name": "rhel",
         "vars":
         {
           "ansible_ssh_user": "vagrant"
         }
       },
       {
-        "name": "Master"
+        "name": "etcd"
       },
       {
-        "name": "Minions"
+        "name": "master"
+      },
+      {
+        "name": "minions"
       }
     ],
 
     "servers":
     [
       {
-        "name": "kuber-master",
-        "IP": "172.12.10.81",
+        "name": "kube-master",
+        "IP": "172.12.10.80",
         "ssh_user": "vagrant",
         "OS": "CentOS",
         "VagrantBox": "centos/7",
@@ -32,13 +35,14 @@
         "cpus": 1,
         "group_memberships":
         [
-          "RHEL",
-          "Master"
+          "rhel",
+          "master",
+          "etcd"
         ]
       },
       {
-        "name": "kuber-minion1",
-        "IP": "172.12.10.82",
+        "name": "kube-minion1",
+        "IP": "172.12.10.90",
         "ssh_user": "vagrant",
         "OS": "CentOS",
         "VagrantBox": "centos/7",
@@ -46,8 +50,8 @@
         "cpus": 1,
         "group_memberships":
         [
-          "RHEL",
-          "Minions"
+          "rhel",
+          "minions"
         ]
       }
     ]
